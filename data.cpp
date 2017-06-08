@@ -836,6 +836,9 @@ void DataManager::SetDefaultValues()
 	mData.SetValue("tw_app_install_status", "0"); // 0 = no status, 1 = not installed, 2 = already installed
 #endif
 
+	// SuperSU workaround
+	mPersist.SetValue("tw_dont_unmount_vendor", "1");
+
 	pthread_mutex_unlock(&m_valuesLock);
 }
 
