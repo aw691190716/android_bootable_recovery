@@ -1346,6 +1346,41 @@ bool TWPartition::UnMount(bool Display_Error) {
 	}
 }
 
+bool TWPartition::UnMount(bool Display_Error, bool force_unmount) {
+	if (Is_Mounted()) {
+		int never_unmount_system;
+		int never_unmount_vendor;
+
+		DataManager::GetValue(TW_DONT_UNMOUNT_SYSTEM, never_unmount_system);
+		if (never_unmount_system == 1 && Mount_Point == "/system")
+			return true; // Never unmount system if you're not supposed to unmount it
+
+		// SuperSU workaround
+		DataManager::GetValue(TW_DONT_UNMOUNT_VENDOR, never_unmount_vendor);
+		if (never_unmount_vendor == 1 && Mount_Point == "/vendor" && !force_unmount)
+			return true;
+
+		if (Is_Storage && MTP_Storage_ID > 0)
+			PartitionManager.Remove_MTP_Storage(MTP_Storage_ID);
+
+		if (!Symlink_Mount_Point.empty())
+			umount(Symlink_Mount_Point.c_str());
+
+		umount(Mount_Point.c_str());
+		if (Is_Mounted()) {
+			if (Display_Error)
+				gui_msg(Msg(msg::kError, "fail_unmount=Failed to unmount '{1}' ({2})")(Mount_Point)(strerror(errno)));
+			else
+				LOGINFO("Unable to unmount '%s'\n", Mount_Point.c_str());
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return true;
+	}
+}
+
 bool TWPartition::ReMount(bool Display_Error) {
 	if (UnMount(Display_Error))
 		return Mount(Display_Error);
@@ -1912,7 +1947,7 @@ bool TWPartition::Wipe_EXT4() {
 		gui_msg(Msg(msg::kError, "unable_to_wipe=Unable to wipe {1}.")(Display_Name));
 		return false;
 	}
-	if (!UnMount(true))
+	if (!UnMount(true, true))
 		return false;
 
 #if defined(USE_EXT4)
