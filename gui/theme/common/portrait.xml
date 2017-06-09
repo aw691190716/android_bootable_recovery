@@ -3422,7 +3422,6 @@
 				</listitem>
 				<listitem name="{@tw_exclude_oem_path_chk=Exclude OEM Path from /data wipe}">
 					<data variable="tw_exclude_oem_path"/>
-					<action function="setexcludepath"></action>
 				</listitem>
 			</listbox>
 

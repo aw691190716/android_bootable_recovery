@@ -923,10 +923,6 @@ void TWPartition::Setup_Data_Media() {
 		}
 	}
 	ExcludeAll(Mount_Point + "/media");
-	/** Since Huawei stores system related stuff on /data, exclude it from beeing wiped **/
-	DataManager::GetValue(TW_EXCLUDE_OEM_PATH, Exclude_OEM_Path);
-	if (Exclude_OEM_Path == 1)
-		wipe_exclusions.add_relative_dir(Mount_Point + "/hw_init");
 }
 
 void TWPartition::Find_Real_Block_Device(string& Block, bool Display_Error) {
@@ -2169,6 +2165,10 @@ bool TWPartition::Wipe_Data_Without_Wiping_Media_Func(const string& parent __unu
 			dir = parent;
 			dir.append(de->d_name);
 			if (wipe_exclusions.check_skip_dirs(dir)) {
+				LOGINFO("skipped '%s'\n", dir.c_str());
+				continue;
+			}
+			if (strcmp(dir.c_str(), "/data/hw_init") == 0 && DataManager::GetIntValue("tw_exclude_oem_path") == 1) {
 				LOGINFO("skipped '%s'\n", dir.c_str());
 				continue;
 			}

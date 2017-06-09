@@ -692,7 +692,8 @@
 		<string name="copy_kernel_log">Copied kernel log to {1}</string>
 		<string name="include_kernel_log">Include Kernel Log</string>
 		<string name="unable_set_boot_slot">Error changing bootloader boot slot to {1}</string>
-		<string name="tw_dont_unmount_vendor_chk">Keep /vendor mounted</string>
 		<string name="openkirin_hdr">OpenKirin Settings</string>
+		<string name="tw_dont_unmount_vendor_chk">Keep /vendor mounted</string>
+		<string name="tw_exclude_oem_path_chk">Exlude OEM Path from /data wipe</string>
 	</resources>
 </language>

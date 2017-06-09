@@ -367,7 +367,6 @@ protected:
 	int twcmd(std::string arg);
 	int setbootslot(std::string arg);
 	int installapp(std::string arg);
-	int setexcludepath(std::string arg);
 
 	int simulate;
 };
