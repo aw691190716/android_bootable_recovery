@@ -199,6 +199,7 @@ GUIAction::GUIAction(xml_node<>* node)
 		ADD_ACTION(setlanguage);
 		ADD_ACTION(checkforapp);
 		ADD_ACTION(togglebacklight);
+		ADD_ACTION(setexcludepath);
 
 		// remember actions that run in the caller thread
 		for (mapFunc::const_iterator it = mf.begin(); it != mf.end(); ++it)
@@ -2031,5 +2032,14 @@ int GUIAction::installapp(std::string arg __unused)
 		simulate_progress_bar();
 exit:
 	operation_end(0);
+	return 0;
+}
+
+int GUIAction::setexcludepath(std::string arg __unused) {
+	if(DataManager::GetIntValue(TW_DONT_UNMOUNT_VENDOR) == 0) {
+		TWPartition().wipe_exclusions.clear_relative_dir("/data/hw_init");
+	} else {
+		TWPartition().wipe_exclusions.add_relative_dir("/data/hw_init");
+	}
 	return 0;
 }

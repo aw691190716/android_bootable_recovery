@@ -108,6 +108,7 @@ public:
 	void Partition_Post_Processing(bool Display_Error);                       // Apply partition specific settings after fstab processed
 	void Set_Backup_FileName(string fname);                                   // Set Backup_FileName for partition
 	string Get_Backup_Name();                                                 // Get Backup_Name for partition
+	TWExclude wipe_exclusions;                                                // Exclusions for file based wipes (data/media devices only)
 
 public:
 	string Current_File_System;                                               // Current file system
@@ -221,7 +222,6 @@ private:
 	bool Is_Adopted_Storage;                                                  // Indicates that this partition is for adopted storage (android_expand)
 	bool SlotSelect;                                                          // Partition has A/B slots
 	TWExclude backup_exclusions;                                              // Exclusions for file based backups
-	TWExclude wipe_exclusions;                                                // Exclusions for file based wipes (data/media devices only)
 
 friend class TWPartitionManager;
 friend class DataManager;

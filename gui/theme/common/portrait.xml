@@ -3420,6 +3420,10 @@
 				<listitem name="{@tw_dont_unmount_vendor_chk=Keep /vendor mounted}">
 					<data variable="tw_dont_unmount_vendor"/>
 				</listitem>
+				<listitem name="{@tw_exclude_oem_path_chk=Exclude OEM Path from /data wipe}">
+					<data variable="tw_exclude_oem_path"/>
+					<action function="setexcludepath"></action>
+				</listitem>
 			</listbox>
 
 			<action>

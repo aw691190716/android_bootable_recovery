@@ -893,6 +893,7 @@ void TWPartition::Setup_Data_Media() {
 	Is_Storage = true;
 	Storage_Path = Mount_Point + "/media";
 	Symlink_Path = Storage_Path;
+	int Exclude_OEM_Path;
 	if (Mount_Point == "/data") {
 		Is_Settings_Storage = true;
 		if (strcmp(EXPAND(TW_EXTERNAL_STORAGE_PATH), "/sdcard") == 0) {
@@ -923,7 +924,9 @@ void TWPartition::Setup_Data_Media() {
 	}
 	ExcludeAll(Mount_Point + "/media");
 	/** Since Huawei stores system related stuff on /data, exclude it from beeing wiped **/
-	wipe_exclusions.add_absolute_dir(Mount_Point + "/hw_init");
+	DataManager::GetValue(TW_EXCLUDE_OEM_PATH, Exclude_OEM_Path);
+	if (Exclude_OEM_Path == 1)
+		wipe_exclusions.add_relative_dir(Mount_Point + "/hw_init");
 }
 
 void TWPartition::Find_Real_Block_Device(string& Block, bool Display_Error) {

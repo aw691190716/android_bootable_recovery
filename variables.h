@@ -119,7 +119,6 @@
 #define TW_SIMULATE_ACTIONS         "tw_simulate_actions"
 #define TW_SIMULATE_FAIL            "tw_simulate_fail"
 #define TW_DONT_UNMOUNT_SYSTEM      "tw_dont_unmount_system"
-#define TW_DONT_UNMOUNT_VENDOR	    "tw_dont_unmount_vendor"
 // #define TW_ALWAYS_RMRF              "tw_always_rmrf"
 
 #define TW_SHOW_DUMLOCK             "tw_show_dumlock"
@@ -138,6 +137,7 @@
 #define TW_CRYPTO_PASSWORD          "tw_crypto_password"
 #define TW_SDEXT_DISABLE_EXT4       "tw_sdext_disable_ext4"
 #define TW_MILITARY_TIME            "tw_military_time"
+
 
 // Also used:
 //   tw_boot_is_mountable
@@ -163,5 +163,8 @@
 #define SCRIPT_FILE_CACHE "/cache/recovery/openrecoveryscript"
 #define SCRIPT_FILE_TMP "/tmp/openrecoveryscript"
 #define TMP_LOG_FILE "/tmp/recovery.log"
+
+#define TW_DONT_UNMOUNT_VENDOR	    "tw_dont_unmount_vendor"
+#define TW_EXCLUDE_OEM_PATH	    "tw_exclude_oem_path"
 
 #endif  // _VARIABLES_HEADER_
