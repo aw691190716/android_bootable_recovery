@@ -3422,7 +3422,7 @@
 			<listbox style="scrolllist">
 				<placement x="%indent%" y="%row3a_y%" w="%content_width%" h="%listbox_settings_height%"/>
 				<icon selected="checkbox_true" unselected="checkbox_false"/>
-				<listitem name="{@tw_dont_unmount_vendor_chk=Keep vendor partition mounted}">
+				<listitem name="{@tw_dont_unmount_vendor_chk=Keep /vendor mounted}">
 					<data variable="tw_dont_unmount_vendor"/>
 				</listitem>
 				<listitem name="{@tw_exclude_oem_path_chk=Exclude OEM path from data wipe}">
