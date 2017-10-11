@@ -1311,7 +1311,38 @@ bool TWPartition::Mount(bool Display_Error) {
 }
 
 bool TWPartition::UnMount(bool Display_Error) {
-	return UnMount(Display_Error, false);
+	if (Is_Mounted()) {
+		int never_unmount_system;
+		int never_unmount_vendor;
+
+		DataManager::GetValue(TW_DONT_UNMOUNT_SYSTEM, never_unmount_system);
+		if (never_unmount_system == 1 && Mount_Point == "/system")
+			return true; // Never unmount system if you're not supposed to unmount it
+
+		// SuperSU workaround
+		DataManager::GetValue(TW_DONT_UNMOUNT_VENDOR, never_unmount_vendor);
+		if (never_unmount_vendor == 1 && Mount_Point == "/vendor")
+			return true;
+
+		if (Is_Storage && MTP_Storage_ID > 0)
+			PartitionManager.Remove_MTP_Storage(MTP_Storage_ID);
+
+		if (!Symlink_Mount_Point.empty())
+			umount(Symlink_Mount_Point.c_str());
+
+		umount(Mount_Point.c_str());
+		if (Is_Mounted()) {
+			if (Display_Error)
+				gui_msg(Msg(msg::kError, "fail_unmount=Failed to unmount '{1}' ({2})")(Mount_Point)(strerror(errno)));
+			else
+				LOGINFO("Unable to unmount '%s'\n", Mount_Point.c_str());
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return true;
+	}
 }
 
 bool TWPartition::UnMount(bool Display_Error, bool force_unmount) {
