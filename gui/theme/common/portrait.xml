@@ -3092,9 +3092,6 @@
 				<listitem name="{@reboot_install_app_prompt_install=Prompt to install TWRP app on every reboot}">
 					<data variable="tw_app_prompt"/>
 				</listitem>
-				<listitem name="{@tw_dont_unmount_vendor_chk=Keep /vendor mounted}">
-					<data variable="tw_dont_unmount_vendor"/>
-				</listitem>
 				<listitem name="{@simact_chk=Simulate actions for theme testing}">
 					<data variable="tw_simulate_actions"/>
 				</listitem>

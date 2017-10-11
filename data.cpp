@@ -845,7 +845,6 @@ void DataManager::SetDefaultValues()
 #endif
 
 	// OpenKirin persistent values
-	mPersist.SetValue("tw_dont_unmount_vendor", "1");
 	mPersist.SetValue("tw_exclude_oem_path", "1");
 
 	pthread_mutex_unlock(&m_valuesLock);
