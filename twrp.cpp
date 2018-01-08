@@ -24,7 +24,7 @@
 #include "gui/twmsg.h"
 
 #include "cutils/properties.h"
-#include "bootloader_message/bootloader_message.h"
+#include "bootloader_message_twrp/include/bootloader_message_twrp/bootloader_message.h"
 
 #ifdef ANDROID_RB_RESTART
 #include "cutils/android_reboot.h"
@@ -45,8 +45,9 @@ extern "C" {
 #include "partitions.hpp"
 #include "openrecoveryscript.hpp"
 #include "variables.h"
+#include "twrpAdbBuFifo.hpp"
 #ifdef TW_USE_NEW_MINADBD
-#include "adb.h"
+#include "minadbd/minadbd.h"
 #else
 extern "C" {
 #include "minadbd21/adb.h"
@@ -56,7 +57,7 @@ extern "C" {
 #include <selinux/label.h>
 struct selabel_handle *selinux_handle;
 
-extern int adb_server_main(int is_daemon, int server_port, int /* reply_fd */);
+//extern int adb_server_main(int is_daemon, int server_port, int /* reply_fd */);
 
 TWPartitionManager PartitionManager;
 int Log_Offset;
@@ -85,7 +86,8 @@ int main(int argc, char **argv) {
 	if (argc == 3 && strcmp(argv[1], "--adbd") == 0) {
 		property_set("ctl.stop", "adbd");
 #ifdef TW_USE_NEW_MINADBD
-		adb_server_main(0, DEFAULT_ADB_PORT, -1);
+		//adb_server_main(0, DEFAULT_ADB_PORT, -1); TODO fix this for android8
+		minadbd_main();
 #else
 		adb_main(argv[2]);
 #endif
@@ -176,7 +178,7 @@ int main(int argc, char **argv) {
 		TWPartition* misc = PartitionManager.Find_Partition_By_Path("/misc");
 		if (misc != NULL) {
 			if (misc->Current_File_System == "emmc") {
-				set_misc_device(misc->Actual_Block_Device);
+				set_misc_device(misc->Actual_Block_Device.c_str());
 			} else {
 				LOGERR("Only emmc /misc is supported\n");
 			}
@@ -329,6 +331,7 @@ int main(int argc, char **argv) {
 	// Check if system has never been changed
 	TWPartition* sys = PartitionManager.Find_Partition_By_Path("/system");
 	TWPartition* ven = PartitionManager.Find_Partition_By_Path("/vendor");
+
 	if (sys) {
 		if ((DataManager::GetIntValue("tw_mount_system_ro") == 0 && sys->Check_Lifetime_Writes() == 0) || DataManager::GetIntValue("tw_mount_system_ro") == 2) {
 			if (DataManager::GetIntValue("tw_never_show_system_ro_page") == 0) {
@@ -350,6 +353,9 @@ int main(int argc, char **argv) {
 		}
 	}
 #endif
+	twrpAdbBuFifo *adb_bu_fifo = new twrpAdbBuFifo();
+	adb_bu_fifo->threadAdbBuFifo();
+
 	// Launch the main GUI
 	gui_start();
 
@@ -378,6 +384,7 @@ int main(int argc, char **argv) {
 
 	// Reboot
 	TWFunc::Update_Intent_File(Send_Intent);
+	delete adb_bu_fifo;
 	TWFunc::Update_Log_File();
 	gui_msg(Msg("rebooting=Rebooting..."));
 	string Reboot_Arg;

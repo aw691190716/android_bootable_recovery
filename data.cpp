@@ -834,6 +834,10 @@ void DataManager::SetDefaultValues()
 	mConst.SetValue("tw_has_boot_slots", "0");
 #endif
 
+#ifdef TW_NO_LEGACY_PROPS
+	LOGINFO("TW_NO_LEGACY_PROPS := true\n");
+#endif
+
 #ifdef TW_OEM_BUILD
 	LOGINFO("TW_OEM_BUILD := true\n");
 	mConst.SetValue("tw_oem_build", "1");
@@ -844,6 +848,8 @@ void DataManager::SetDefaultValues()
 	mData.SetValue("tw_app_install_status", "0"); // 0 = no status, 1 = not installed, 2 = already installed
 #endif
 
+	mData.SetValue("tw_enable_adb_backup", "0");
+	
 	// OpenKirin persistent values
 	mPersist.SetValue("tw_exclude_oem_path", "1");
 
