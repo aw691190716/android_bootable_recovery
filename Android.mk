@@ -15,7 +15,7 @@
 LOCAL_PATH := $(call my-dir)
 commands_TWRP_local_path := $(LOCAL_PATH)
 
-ifdef project-path-for
+ifneq ($(project-path-for),)
     ifeq ($(LOCAL_PATH),$(call project-path-for,recovery))
         PROJECT_PATH_AGREES := true
         BOARD_SEPOLICY_DIRS += $(call project-path-for,recovery)/sepolicy
@@ -314,6 +314,9 @@ WITH_CRYPTO_UTILS := \
     $(if $(wildcard system/core/libcrypto_utils/android_pubkey.c),true)
 ifeq ($(TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID), true)
     LOCAL_CFLAGS += -DTW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID
+endif
+ifeq ($(TW_USE_SERIALNO_PROPERTY_FOR_DEVICE_ID), true)
+    LOCAL_CFLAGS += -DTW_USE_SERIALNO_PROPERTY_FOR_DEVICE_ID
 endif
 ifneq ($(TW_BRIGHTNESS_PATH),)
 	LOCAL_CFLAGS += -DTW_BRIGHTNESS_PATH=$(TW_BRIGHTNESS_PATH)
