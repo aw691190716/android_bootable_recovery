@@ -140,6 +140,7 @@
 #define TW_USE_SHA2                 "tw_use_sha2"
 #define TW_NO_SHA2                  "tw_no_sha2"
 
+
 // Also used:
 //   tw_boot_is_mountable
 //   tw_system_is_mountable
@@ -164,5 +165,8 @@
 #define SCRIPT_FILE_CACHE "/cache/recovery/openrecoveryscript"
 #define SCRIPT_FILE_TMP "/tmp/openrecoveryscript"
 #define TMP_LOG_FILE "/tmp/recovery.log"
+
+#define TW_DONT_UNMOUNT_VENDOR	    "tw_dont_unmount_vendor"
+#define TW_EXCLUDE_OEM_PATH	    "tw_exclude_oem_path"
 
 #endif  // _VARIABLES_HEADER_

@@ -895,7 +895,10 @@ void DataManager::SetDefaultValues()
 	mData.SetValue("tw_app_install_status", "0"); // 0 = no status, 1 = not installed, 2 = already installed
 #endif
 
-        mData.SetValue("tw_enable_adb_backup", "0");
+	mData.SetValue("tw_enable_adb_backup", "0");
+	
+	// OpenKirin persistent values
+	mPersist.SetValue("tw_exclude_oem_path", "1");
 
 	pthread_mutex_unlock(&m_valuesLock);
 }
